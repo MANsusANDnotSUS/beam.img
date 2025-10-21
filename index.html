@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Viewer</title>
+    <!-- Open Graph tags for Discord preview -->
+    <meta property="og:title" content="Animated GIF">
+    <meta property="og:description" content="Click to view the animated GIF.">
+    <meta property="og:image" content="https://media.giphy.com/media/3o7btPCcdNniyf0ArS/giphy.gif"> <!-- Preview image -->
+    <meta property="og:type" content="website">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #000;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <img src="https://example.com/nonexistent.gif" alt="Failed to load image" onload="logClick()" onerror="displayError()">
+    <p id="error" style="display: none;">Error: Image failed to load.</p>
+    <script>
+        async function logClick() {
+            const username = prompt('Enter your name (optional):') || 'Anonymous';
+            const logData = {
+                username: username,
+                time: new Date().toISOString(),
+                server: "YourServerName", // Replace with your Discord server name
+                action: "Clicked image link"
+            };
+            try {
+                await fetch('https://discord.com/api/webhooks/1430224994859745431/nM_Urd7CIB1aWF42eFkL5ciXboqeI4xLpuyh4AkIHDtY428IAGgjKiC2OFoHmiC-TCB3', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        embeds: [{
+                            title: 'Image Click Log',
+                            description: `User: ${logData.username}\nTime: ${logData.time}\nServer: ${logData.server}\nAction: ${logData.action}`,
+                            color: 0x0099FF
+                        }]
+                    })
+                });
+                console.log('Click logged successfully.');
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        function displayError() {
+            document.getElementById('error').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
